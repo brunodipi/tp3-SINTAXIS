@@ -1411,7 +1411,8 @@ yyreturn:
 
 int main() {
 	printf("Iniciando analisis de programa Micro!\n");
-	yyparse();
+	while(1)
+    yyparse();
 }
 
 void yyerror (char *s){
