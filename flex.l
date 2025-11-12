@@ -28,10 +28,10 @@ SEPARADOR [ \t\n]
 "+" {return SUMA;}
 "-" {return RESTA;}
 "," {return COMA;} // la usa dentro de los leer y escribir
-"inicio" {return INICIO;}
-"fin" {return FIN;}
-"leer" {return LEER;}
-"escribir" {return ESCRIBIR;}
+"inicio" {return INICIO; printf("Detecto palabra reservada "inicio"\n");}
+"fin" {return FIN; printf("Detecto palabra reservada "fin"\n");}
+"leer" {return LEER; printf("Detecto palabra reservada "leer"\n");}
+"escribir" {return ESCRIBIR; printf("Detecto palabra reservada "escribir"\n");}
 
 {constEntera} {
 	yylval.num=atoi(yytext);
