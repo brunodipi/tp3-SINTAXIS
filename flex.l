@@ -28,6 +28,11 @@ SEPARADOR [ \t\n]
 "+" {return SUMA;}
 "-" {return RESTA;}
 "," {return COMA;} // la usa dentro de los leer y escribir
+"inicio" {return INICIO;}
+"fin" {return FIN;}
+"leer" {return LEER;}
+"escribir" {return ESCRIBIR;}
+
 {constEntera} {
 	yylval.num=atoi(yytext);
 	return CONSTANTE;

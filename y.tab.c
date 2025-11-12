@@ -77,7 +77,6 @@ extern char *yytext;
 extern int yyleng;
 extern int yylex(void);
 extern void yyerror(char*);
-int variable=0;
 
 extern int yylinea;
 
@@ -120,7 +119,7 @@ void mostrarTS() {
 
 
 
-#line 124 "bison.tab.c"
+#line 123 "y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -143,7 +142,10 @@ void mostrarTS() {
 #  endif
 # endif
 
-
+/* Use api.header.include to #include this header
+   instead of duplicating it here.  */
+#ifndef YY_YY_Y_TAB_H_INCLUDED
+# define YY_YY_Y_TAB_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
 # define YYDEBUG 0
@@ -177,17 +179,35 @@ extern int yydebug;
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
+/* Token kinds.  */
+#define YYEMPTY -2
+#define YYEOF 0
+#define YYerror 256
+#define YYUNDEF 257
+#define ASIGNACION 258
+#define PYCOMA 259
+#define SUMA 260
+#define RESTA 261
+#define PARENIZQUIERDO 262
+#define PARENDERECHO 263
+#define COMA 264
+#define ID 265
+#define CONSTANTE 266
+#define INICIO 267
+#define FIN 268
+#define LEER 269
+#define ESCRIBIR 270
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 54 "bison.y"
+#line 53 "bison.y"
 
    char* cadena;
    int num;
 
-#line 191 "bison.tab.c"
+#line 211 "y.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -202,7 +222,7 @@ extern YYSTYPE yylval;
 int yyparse (void);
 
 
-
+#endif /* !YY_YY_Y_TAB_H_INCLUDED  */
 /* Symbol kind.  */
 enum yysymbol_kind_t
 {
@@ -622,9 +642,9 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    67,    67,    74,    75,    78,    79,    82,    82,    95,
-      96,    99,   105,   113,   114,   117,   118,   121,   130,   131,
-     134,   135
+       0,    66,    66,    73,    74,    77,    78,    81,    81,    94,
+      95,    98,   104,   112,   113,   116,   117,   120,   129,   130,
+     133,   134
 };
 #endif
 
@@ -1209,16 +1229,16 @@ yyreduce:
   switch (yyn)
     {
   case 2: /* programa: INICIO sentencias FIN  */
-#line 67 "bison.y"
+#line 66 "bison.y"
                                 {
     printf("\nAnalisis Sintactico Completo!!!\n");
     mostrarTS(); 
 }
-#line 1218 "bison.tab.c"
+#line 1238 "y.tab.c"
     break;
 
   case 7: /* $@1: %empty  */
-#line 82 "bison.y"
+#line 81 "bison.y"
                          {
 	printf("el id es: %s de longitud: %d ",yytext,yyleng);
 	//if(yyleng>10) yyerror("metiste la pata");
@@ -1229,33 +1249,33 @@ yyreduce:
 	}
 	
 }
-#line 1233 "bison.tab.c"
+#line 1253 "y.tab.c"
     break;
 
   case 11: /* lista_id: ID  */
-#line 99 "bison.y"
+#line 98 "bison.y"
              {
     if (!buscarSimbolo((yyvsp[0].cadena))) {
         insertarSimbolo((yyvsp[0].cadena)); // Rutina Semántica: Registra el ID en la TS
         printf("Semantica: ID '%s' registrado por LEER.\n", (yyvsp[0].cadena));
     }
 }
-#line 1244 "bison.tab.c"
+#line 1264 "y.tab.c"
     break;
 
   case 12: /* lista_id: lista_id COMA ID  */
-#line 105 "bison.y"
+#line 104 "bison.y"
                    {
     if (!buscarSimbolo((yyvsp[0].cadena))) {
         insertarSimbolo((yyvsp[0].cadena)); // Rutina Semántica: Registra el siguiente ID
         printf("Semantica: ID '%s' registrado por LEER.\n", (yyvsp[0].cadena));
     }
 }
-#line 1255 "bison.tab.c"
+#line 1275 "y.tab.c"
     break;
 
   case 17: /* primaria: ID  */
-#line 121 "bison.y"
+#line 120 "bison.y"
              {
 	//Rutina semantica: Verificar ID en expresion
 	if(!buscarSimbolo((yyvsp[0].cadena))) {
@@ -1265,17 +1285,17 @@ yyreduce:
 		//yyerror("Error semantico: Uso de ID ('%s') no declarado", $1);
 	}
 }
-#line 1269 "bison.tab.c"
+#line 1289 "y.tab.c"
     break;
 
   case 18: /* primaria: CONSTANTE  */
-#line 130 "bison.y"
+#line 129 "bison.y"
            {printf("valores %d ",(yyvsp[0].num)); }
-#line 1275 "bison.tab.c"
+#line 1295 "y.tab.c"
     break;
 
 
-#line 1279 "bison.tab.c"
+#line 1299 "y.tab.c"
 
       default: break;
     }
@@ -1468,12 +1488,25 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 138 "bison.y"
+#line 137 "bison.y"
 
 
-int main() {
+int main(int argc, char *argv[]) {
 	printf("Iniciando analisis de programa Micro!\n");
+
+	if (argc > 1) {
+        extern FILE *yyin; // Declara la variable de entrada de Flex
+        
+        if (!(yyin = fopen(argv[1], "r"))) {
+            fprintf(stderr, "ERROR: No se pudo abrir el archivo de entrada: %s\n", argv[1]);
+            return 1; 
+        }
+    } else {
+        printf("Leyendo desde la entrada estandar (stdin)....\n");
+    }
+
 	yyparse();
+	return 0;
 }
 
 void yyerror (char *s){

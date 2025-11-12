@@ -7,7 +7,6 @@ extern char *yytext;
 extern int yyleng;
 extern int yylex(void);
 extern void yyerror(char*);
-int variable=0;
 
 extern int yylinea;
 
@@ -137,9 +136,22 @@ operadorAditivo: SUMA
 
 %%
 
-int main() {
+int main(int argc, char *argv[]) {
 	printf("Iniciando analisis de programa Micro!\n");
+
+	if (argc > 1) {
+        extern FILE *yyin; // Declara la variable de entrada de Flex
+        
+        if (!(yyin = fopen(argv[1], "r"))) {
+            fprintf(stderr, "ERROR: No se pudo abrir el archivo de entrada: %s\n", argv[1]);
+            return 1; 
+        }
+    } else {
+        printf("Leyendo desde la entrada estandar (stdin)....\n");
+    }
+
 	yyparse();
+	return 0;
 }
 
 void yyerror (char *s){
