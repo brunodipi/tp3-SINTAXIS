@@ -1,3 +1,3 @@
 inicio
-escribir(2);
+escribire(2);
 fin

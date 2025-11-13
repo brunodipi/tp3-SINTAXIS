@@ -544,9 +544,9 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    66,    66,    73,    74,    77,    78,    81,    81,    94,
-      95,    98,   104,   112,   113,   116,   117,   120,   129,   130,
-     133,   134
+       0,    66,    66,    76,    77,    80,    80,    83,    83,    96,
+      97,   100,   106,   114,   115,   118,   118,   121,   130,   131,
+     134,   135
 };
 #endif
 
@@ -1147,17 +1147,21 @@ yyreduce:
   case 2: /* programa: INICIO sentencias FIN  */
 #line 66 "bison.y"
                                 {
+
+	if(!strncmp(yytext, "inicio", 6)){ //texto prefijo longitudPrefijo
+		yyerror("no tiene inicio!");
+	}
     printf("\nAnalisis Sintactico Completo!!!\n");
     mostrarTS(); 
 }
-#line 1154 "bison.tab.c"
+#line 1158 "bison.tab.c"
     break;
 
   case 7: /* $@1: %empty  */
-#line 81 "bison.y"
+#line 83 "bison.y"
                          {
 	printf("el id es: %s de longitud: %d ",yytext,yyleng);
-	//if(yyleng>10) yyerror("metiste la pata");
+	if(yyleng>32) yyerror("el identificador es muy largo");
 	//Rutina semantica 2: Verificar que este declarado ???
 	if(!buscarSimbolo((yyvsp[0].cadena))){
 		insertarSimbolo((yyvsp[0].cadena));
@@ -1165,33 +1169,33 @@ yyreduce:
 	}
 	
 }
-#line 1169 "bison.tab.c"
+#line 1173 "bison.tab.c"
     break;
 
   case 11: /* lista_id: ID  */
-#line 98 "bison.y"
+#line 100 "bison.y"
              {
     if (!buscarSimbolo((yyvsp[0].cadena))) {
         insertarSimbolo((yyvsp[0].cadena)); // Rutina Semántica: Registra el ID en la TS
         printf("Semantica: ID '%s' registrado por LEER.\n", (yyvsp[0].cadena));
     }
 }
-#line 1180 "bison.tab.c"
+#line 1184 "bison.tab.c"
     break;
 
   case 12: /* lista_id: lista_id COMA ID  */
-#line 104 "bison.y"
+#line 106 "bison.y"
                    {
     if (!buscarSimbolo((yyvsp[0].cadena))) {
         insertarSimbolo((yyvsp[0].cadena)); // Rutina Semántica: Registra el siguiente ID
         printf("Semantica: ID '%s' registrado por LEER.\n", (yyvsp[0].cadena));
     }
 }
-#line 1191 "bison.tab.c"
+#line 1195 "bison.tab.c"
     break;
 
   case 17: /* primaria: ID  */
-#line 120 "bison.y"
+#line 121 "bison.y"
              {
 	//Rutina semantica: Verificar ID en expresion
 	if(!buscarSimbolo((yyvsp[0].cadena))) {
@@ -1201,17 +1205,17 @@ yyreduce:
 		//yyerror("Error semantico: Uso de ID ('%s') no declarado", $1);
 	}
 }
-#line 1205 "bison.tab.c"
+#line 1209 "bison.tab.c"
     break;
 
   case 18: /* primaria: CONSTANTE  */
-#line 129 "bison.y"
+#line 130 "bison.y"
            {printf("valores %d ",(yyvsp[0].num)); }
-#line 1211 "bison.tab.c"
+#line 1215 "bison.tab.c"
     break;
 
 
-#line 1215 "bison.tab.c"
+#line 1219 "bison.tab.c"
 
       default: break;
     }
@@ -1405,7 +1409,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 137 "bison.y"
+#line 138 "bison.y"
 
 
 int main(int argc, char *argv[]) {

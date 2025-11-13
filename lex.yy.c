@@ -788,22 +788,22 @@ YY_RULE_SETUP
 case 8:
 YY_RULE_SETUP
 #line 31 "flex.l"
-{return INICIO; printf("Detecto palabra reservada inicio\n");}
+{printf("Detecto palabra reservada inicio\n"); return INICIO;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
 #line 32 "flex.l"
-{return FIN; printf("Detecto palabra reservada fin\n");}
+{printf("Detecto palabra reservada fin\n"); return FIN;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
 #line 33 "flex.l"
-{return LEER; printf("Detecto palabra reservada leer\n");}
+{printf("Detecto palabra reservada leer\n"); return LEER;}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
 #line 34 "flex.l"
-{return ESCRIBIR; printf("Detecto palabra reservada escribir\n");}
+{printf("Detecto palabra reservada escribir\n"); return ESCRIBIR;}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
