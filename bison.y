@@ -69,18 +69,16 @@ programa: INICIO sentencias FIN {
 }
 ;
 
-
 sentencias: sentencias sentencia 
 |sentencia
 ;
 
-sentencia: sentencia_asignacion
-| sentencia_entrada
+sentencia: sentencia_asignacion | sentencia_entrada
 ;
 
 sentencia_asignacion: ID {
 	printf("el id es: %s de longitud: %d ",yytext,yyleng);
-	//if(yyleng>10) yyerror("metiste la pata");
+	if(yyleng>32) yyerror("el identificador es muy largo");
 	//Rutina semantica 2: Verificar que este declarado ???
 	if(!buscarSimbolo($1)){
 		insertarSimbolo($1);
@@ -113,8 +111,7 @@ lista_expresiones: expresion
 | lista_expresiones COMA expresion
 ;
 
-expresion: primaria 
-|expresion operadorAditivo primaria 
+expresion: primaria | expresion operadorAditivo primaria 
 ; 
 
 primaria: ID {
