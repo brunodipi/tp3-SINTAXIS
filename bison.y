@@ -153,6 +153,18 @@ int main(int argc, char *argv[]) {
 
 void yyerror (char *s){
 	fprintf (stderr, "\n --- ERROR (Linea %d): %s --- \n", yylinea, s);
+
+	if (yylinea == 1) {
+        // Si Bison falló al inicio (no arranca con inicio)
+		if (strcmp(s, "syntax error") == 0) {
+        	fprintf (stderr, "Motivo error: Se esperaba la palabra reservada 'inicio' para comenzar el programa Micro.\n");
+		}
+    }
+
+	// Si el error es cerca del final
+    if (yylinea > 1 && strcmp(s, "syntax error") == 0 && yylex() == 0) {
+        fprintf (stderr, "Faltó cerrar el programa con fin o falta un punto y coma.\n");
+    }
 }
 
 int yywrap(void) { 
