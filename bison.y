@@ -69,11 +69,10 @@ programa: INICIO sentencias FIN {
 }
 ;
 
-sentencias: sentencias sentencia 
-|sentencia
+sentencias: sentencias sentencia | sentencia
 ;
 
-sentencia: sentencia_asignacion | sentencia_entrada
+sentencia: sentencia_asignacion {yylinea += 1;} | sentencia_entrada {yylinea += 1;}
 ;
 
 sentencia_asignacion: ID {
@@ -162,9 +161,12 @@ void yyerror (char *s){
     }
 
 	// Si el error es cerca del final
-    if (yylinea > 1 && strcmp(s, "syntax error") == 0 && yylex() == 0) {
-        fprintf (stderr, "Faltó cerrar el programa con fin o falta un punto y coma.\n");
+    if (yylinea > 1 && strcmp(s, "syntax error") == 0 && yylex() == 0) { //0 si estas en fin de archivo
+        fprintf (stderr, "Falto cerrar el programa con fin o falta un punto y coma en la ultima sentencia\n");
     }
+
+	if(yylinea>1 && strcmp(s, "syntax error") == 0 && yylex() != 0)
+		fprintf (stderr, "Falta un punto y coma o los parentesis estan mal posicionados\n");
 }
 
 int yywrap(void) { 

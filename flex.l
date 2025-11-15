@@ -28,8 +28,8 @@ SEPARADOR [ \t\n]
 "+" {return SUMA;}
 "-" {return RESTA;}
 "," {return COMA;} // la usa dentro de los leer y escribir
-"inicio" {printf("Detecto palabra reservada inicio\n"); return INICIO;}
-"fin" {printf("Detecto palabra reservada fin\n"); return FIN;}
+"inicio" {printf("Detecto palabra reservada inicio\n"); yylinea += 1; return INICIO;}
+"fin" {printf("Detecto palabra reservada fin\n"); yylinea += 1; return FIN;}
 "leer" {printf("Detecto palabra reservada leer\n"); return LEER;}
 "escribir" {printf("Detecto palabra reservada escribir\n"); return ESCRIBIR;}
 

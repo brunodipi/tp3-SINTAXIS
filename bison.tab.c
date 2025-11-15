@@ -544,9 +544,9 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    66,    66,    76,    77,    80,    80,    83,    83,    96,
-      97,   100,   106,   114,   115,   118,   118,   121,   130,   131,
-     134,   135
+       0,    66,    66,    72,    72,    75,    75,    78,    78,    91,
+      92,    95,   101,   109,   110,   113,   113,   116,   125,   126,
+     129,   130
 };
 #endif
 
@@ -1147,18 +1147,26 @@ yyreduce:
   case 2: /* programa: INICIO sentencias FIN  */
 #line 66 "bison.y"
                                 {
-
-	if(!strncmp(yytext, "inicio", 6)){ //texto prefijo longitudPrefijo
-		yyerror("no tiene inicio!");
-	}
     printf("\nAnalisis Sintactico Completo!!!\n");
     mostrarTS(); 
 }
-#line 1158 "bison.tab.c"
+#line 1154 "bison.tab.c"
+    break;
+
+  case 5: /* sentencia: sentencia_asignacion  */
+#line 75 "bison.y"
+                                {yylinea += 1;}
+#line 1160 "bison.tab.c"
+    break;
+
+  case 6: /* sentencia: sentencia_entrada  */
+#line 75 "bison.y"
+                                                                    {yylinea += 1;}
+#line 1166 "bison.tab.c"
     break;
 
   case 7: /* $@1: %empty  */
-#line 83 "bison.y"
+#line 78 "bison.y"
                          {
 	printf("el id es: %s de longitud: %d ",yytext,yyleng);
 	if(yyleng>32) yyerror("el identificador es muy largo");
@@ -1169,33 +1177,33 @@ yyreduce:
 	}
 	
 }
-#line 1173 "bison.tab.c"
+#line 1181 "bison.tab.c"
     break;
 
   case 11: /* lista_id: ID  */
-#line 100 "bison.y"
+#line 95 "bison.y"
              {
     if (!buscarSimbolo((yyvsp[0].cadena))) {
         insertarSimbolo((yyvsp[0].cadena)); // Rutina Semántica: Registra el ID en la TS
         printf("Semantica: ID '%s' registrado por LEER.\n", (yyvsp[0].cadena));
     }
 }
-#line 1184 "bison.tab.c"
+#line 1192 "bison.tab.c"
     break;
 
   case 12: /* lista_id: lista_id COMA ID  */
-#line 106 "bison.y"
+#line 101 "bison.y"
                    {
     if (!buscarSimbolo((yyvsp[0].cadena))) {
         insertarSimbolo((yyvsp[0].cadena)); // Rutina Semántica: Registra el siguiente ID
         printf("Semantica: ID '%s' registrado por LEER.\n", (yyvsp[0].cadena));
     }
 }
-#line 1195 "bison.tab.c"
+#line 1203 "bison.tab.c"
     break;
 
   case 17: /* primaria: ID  */
-#line 121 "bison.y"
+#line 116 "bison.y"
              {
 	//Rutina semantica: Verificar ID en expresion
 	if(!buscarSimbolo((yyvsp[0].cadena))) {
@@ -1205,17 +1213,17 @@ yyreduce:
 		//yyerror("Error semantico: Uso de ID ('%s') no declarado", $1);
 	}
 }
-#line 1209 "bison.tab.c"
+#line 1217 "bison.tab.c"
     break;
 
   case 18: /* primaria: CONSTANTE  */
-#line 130 "bison.y"
+#line 125 "bison.y"
            {printf("valores %d ",(yyvsp[0].num)); }
-#line 1215 "bison.tab.c"
+#line 1223 "bison.tab.c"
     break;
 
 
-#line 1219 "bison.tab.c"
+#line 1227 "bison.tab.c"
 
       default: break;
     }
@@ -1409,7 +1417,7 @@ yyreturn:
   return yyresult;
 }
 
-#line 138 "bison.y"
+#line 133 "bison.y"
 
 
 int main(int argc, char *argv[]) {
@@ -1432,6 +1440,21 @@ int main(int argc, char *argv[]) {
 
 void yyerror (char *s){
 	fprintf (stderr, "\n --- ERROR (Linea %d): %s --- \n", yylinea, s);
+
+	if (yylinea == 1) {
+        // Si Bison falló al inicio (no arranca con inicio)
+		if (strcmp(s, "syntax error") == 0) {
+        	fprintf (stderr, "Motivo error: Se esperaba la palabra reservada 'inicio' para comenzar el programa Micro.\n");
+		}
+    }
+
+	// Si el error es cerca del final
+    if (yylinea > 1 && strcmp(s, "syntax error") == 0 && yylex() == 0) { //0 si estas en fin de archivo
+        fprintf (stderr, "Falto cerrar el programa con fin o falta un punto y coma en la ultima sentencia\n");
+    }
+
+	if(yylinea>1 && strcmp(s, "syntax error") == 0 && yylex() != 0)
+		fprintf (stderr, "Falta un punto y coma o los parentesis estan mal posicionados\n");
 }
 
 int yywrap(void) { 

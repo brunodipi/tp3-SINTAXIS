@@ -1,3 +1,4 @@
 inicio
-escribire(2);
+leer(a);
+leer(b);
 fin
